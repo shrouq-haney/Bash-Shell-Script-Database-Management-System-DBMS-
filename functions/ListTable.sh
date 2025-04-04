@@ -1,0 +1,34 @@
+#! /bin/bash
+function ListTable {
+    clear
+    echo "==========================================================================================================================================================="
+    echo ""
+    echo "  								 📋 Tables List in $dbname 📋"
+    echo ""
+    echo "============================================================================================================================================================"
+
+    while true; do
+        read -p "🔹 Enter 1 to list all tables or 'exit' to return: " choose
+
+        case $choose in
+            "exit")
+                TablesMainMenu
+                return
+                ;;
+            "1")
+                if [[ ! -d "$DB_MAIN_DIR/$dbname" || -z $(ls -A "$DB_MAIN_DIR/$dbname" 2>/dev/null) ]]; then
+                    echo -e "${RED_CRIMSON}❌No tables found in '$dbname'!${NC}"
+                else
+                    echo "-------------------------------------------------------------------------------------------------------------------------------------------"
+                    echo "📂 Available Tables :) "
+                    ls "$DB_MAIN_DIR/$dbname" | grep -E '^[^_]+\.xml$' | sed 's/.xml$//'| awk '{print "📄 " $0}'  
+                    echo "-------------------------------------------------------------------------------------------------------------------------------------------"
+                fi
+                ;;
+            *)
+                echo -e "${RED_CRIMSON}❌Invalid option! Please try again.${NC}"
+                ;;
+        esac
+    done
+}
+
